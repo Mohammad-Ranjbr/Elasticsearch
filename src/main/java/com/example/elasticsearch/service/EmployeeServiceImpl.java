@@ -3,8 +3,12 @@ package com.example.elasticsearch.service;
 import com.example.elasticsearch.model.Employee;
 import com.example.elasticsearch.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,6 +54,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getEmployeeById(Long id) {
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
         return optionalEmployee.orElse(null);
+    }
+
+    @Override
+    public List<Employee> getEmployeeByName(String name) {
+        return employeeRepository.findByName(name);
+    }
+
+    @Override
+    public Page<Employee> paginatedEmployees(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        return employeeRepository.findAll(pageRequest);
     }
 
 }

@@ -3,9 +3,12 @@ package com.example.elasticsearch.controller;
 import com.example.elasticsearch.model.Employee;
 import com.example.elasticsearch.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -54,6 +57,18 @@ public class EmployeeController {
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>("Employee deleted", HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Employee>> searchEmployeeByName(@RequestParam("keyword") String name) {
+        List<Employee> employees = employeeService.getEmployeeByName(name);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<Employee>> paginatedEmployees(@RequestParam("page") int page,@RequestParam("size") int size) {
+        Page<Employee> employees = employeeService.paginatedEmployees(page, size);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
 }
