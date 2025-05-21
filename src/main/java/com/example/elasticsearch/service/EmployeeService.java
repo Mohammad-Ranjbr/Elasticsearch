@@ -7,7 +7,7 @@ public interface EmployeeService {
     Employee createEmployee(Employee employee);
     Iterable<Employee> getAllEmployees();
     Employee updateEmployee(Long id, Employee employee);
-    boolean deleteEmployee(Long id);
+    void deleteEmployee(Long id);
     Employee getEmployeeById(Long id);
 
 }
