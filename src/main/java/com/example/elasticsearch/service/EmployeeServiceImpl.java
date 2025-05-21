@@ -5,7 +5,6 @@ import com.example.elasticsearch.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,8 +23,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return (List<Employee>) employeeRepository.findAll();
+    public Iterable<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
     }
 
     @Override
