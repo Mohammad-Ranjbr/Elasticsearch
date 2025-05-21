@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class Employee {
 
     @Id
-    private String id;
+    private Long id;
     private String name;
     private String department;
     private double salary;;
