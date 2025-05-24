@@ -9,5 +9,6 @@ public interface ProductService {
     Product createProduct(Product product);
     Iterable<Product> getAllProducts() throws IOException;
     Product getProductById(String id) throws IOException;
+    Product updateProduct(String id, Product product) throws IOException;
 
 }

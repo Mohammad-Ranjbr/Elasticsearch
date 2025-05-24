@@ -1,10 +1,8 @@
 package com.example.elasticsearch.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.GetRequest;
-import co.elastic.clients.elasticsearch.core.GetResponse;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch._types.Result;
+import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.example.elasticsearch.model.Product;
 import org.slf4j.Logger;
@@ -65,5 +63,18 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
     }
+
+    @Override
+    public Product updateProduct(String id, Product product) throws IOException {
+        UpdateRequest<Product, Product> updateRequest = new UpdateRequest.Builder<Product, Product>().index("products-002").id(id).doc(product).build();
+        UpdateResponse<Product> updateResponse = elasticsearchClient.update(updateRequest, Product.class);
+        if(updateResponse.result().equals(Result.Updated) || updateResponse.result().equals(Result.Created)){
+            return product;
+        } else {
+            return null;
+        }
+    }
+
+
 
 }
