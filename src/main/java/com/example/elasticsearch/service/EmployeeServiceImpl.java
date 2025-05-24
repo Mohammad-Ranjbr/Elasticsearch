@@ -67,4 +67,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findAll(pageRequest);
     }
 
+    @Override
+    public List<Employee> getEmployeeBySalaryBetween(double min, double max) {
+        return employeeRepository.findBySalaryBetween(min, max);
+    }
+
 }

@@ -71,4 +71,10 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<Employee>> filterEmployeesBySalaryRange(@RequestParam("min") double min,@RequestParam("max") double max) {
+        List<Employee> employees = employeeService.getEmployeeBySalaryBetween(min, max);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
 }
