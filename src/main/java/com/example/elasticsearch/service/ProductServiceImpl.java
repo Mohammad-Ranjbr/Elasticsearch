@@ -1,6 +1,8 @@
 package com.example.elasticsearch.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.GetRequest;
+import co.elastic.clients.elasticsearch.core.GetResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
@@ -51,6 +53,17 @@ public class ProductServiceImpl implements ProductService {
             products.add(product);
         }
         return products;
+    }
+
+    @Override
+    public Product getProductById(String id) throws IOException {
+        GetRequest getRequest = new GetRequest.Builder().index("products-002").id(id).build();
+        GetResponse<Product> response = elasticsearchClient.get(getRequest, Product.class);
+        if(response.found()){
+            return  response.source();
+        } else {
+            return null;
+        }
     }
 
 }
