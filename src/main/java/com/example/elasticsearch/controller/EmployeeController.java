@@ -90,4 +90,10 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
+    @GetMapping("/search/range")
+    public ResponseEntity<List<Employee>> searchEmployeeBySalaryRange(@RequestParam("min") double min,@RequestParam("max") double max) {
+        List<Employee> employees = employeeService.searchEmployeeBySalaryRange(min, max);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
 }

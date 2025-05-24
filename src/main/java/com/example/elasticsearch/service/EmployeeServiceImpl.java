@@ -82,4 +82,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findByMatchNameAndSalaryRange(name, minSalary, maxSalary);
     }
 
+    @Override
+    public List<Employee> searchEmployeeBySalaryRange(double minSalary, double maxSalary) {
+        return employeeRepository.findBySalaryRange(minSalary, maxSalary);
+    }
+
 }

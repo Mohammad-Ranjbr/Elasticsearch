@@ -16,5 +16,7 @@ public interface EmployeeRepository extends ElasticsearchRepository<Employee, Lo
     List<Employee> findByNameMatchQuery(String name);
     @Query(value = "{\"bool\": {\"must\": [{\"match\": {\"name\": \"?0\"}},{\"range\": {\"salary\": {\"gte\": ?1,\"lte\": ?2}}}]}}")
     List<Employee> findByMatchNameAndSalaryRange(String name, double minSalary, double maxSalary);
+    @Query(value = "{\"range\": {\"salary\": {\"gte\": ?0,\"lte\": ?1}}}")
+    List<Employee> findBySalaryRange(double minSalary, double maxSalary);
 
 }
