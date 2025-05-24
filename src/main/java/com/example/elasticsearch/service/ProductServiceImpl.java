@@ -55,10 +55,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(String id) throws IOException {
-        GetRequest getRequest = new GetRequest.Builder().index("products-002").id(id).build();
+        GetRequest getRequest = new GetRequest.Builder().index("products-002").id(id).build(); // Creating a request to receive a document with a specific ID
         GetResponse<Product> response = elasticsearchClient.get(getRequest, Product.class);
-        if(response.found()){
-            return  response.source();
+        if(response.found()){ // Check if the document is found or not
+            return  response.source(); // // If found, returns the Product object
         } else {
             return null;
         }
@@ -66,8 +66,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(String id, Product product) throws IOException {
+        // Create an update request by specifying the index, document ID, and new document.
+        // UpdateRequest<TDocument, TPartialDocument>
+        // TDocument The main type of document stored in Elasticsearch that you want to read or work with.
+        // TPartialDocument The document type you want to update the document with (i.e. part of the document or doc(...))
+        // Can they be different? Yes. If, for example, we only update a part of the document, we can use a separate DTO or class.
         UpdateRequest<Product, Product> updateRequest = new UpdateRequest.Builder<Product, Product>().index("products-002").id(id).doc(product).build();
         UpdateResponse<Product> updateResponse = elasticsearchClient.update(updateRequest, Product.class);
+        // Because if the previous document does not exist, a new document may be created.
         if(updateResponse.result().equals(Result.Updated) || updateResponse.result().equals(Result.Created)){
             return product;
         } else {
@@ -80,6 +86,25 @@ public class ProductServiceImpl implements ProductService {
         DeleteRequest deleteRequest = new DeleteRequest.Builder().index("products-002").id(id).build();
         DeleteResponse deleteResponse = elasticsearchClient.delete(deleteRequest);
         return deleteResponse.result().equals(Result.Deleted);
+    }
+
+    @Override
+    public List<Product> getProductsByCategory(String category) throws IOException {
+        SearchRequest searchRequest = new SearchRequest.Builder()
+                .index("products-002")
+                .query(q ->
+                        q.match(t ->
+                                t.field("category")
+                                        .query(category)))
+                .build();
+        SearchResponse<Product> searchResponse = elasticsearchClient.search(searchRequest, Product.class);
+        List<Hit<Product>> hits = searchResponse.hits().hits();
+        List<Product> products = new ArrayList<>();
+        for (Hit<Product> hit : hits) {
+            Product product = hit.source();
+            products.add(product);
+        }
+        return products;
     }
 
 }
