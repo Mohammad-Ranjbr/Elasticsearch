@@ -75,6 +75,11 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-
+    @Override
+    public boolean deleteProduct(String id) throws IOException {
+        DeleteRequest deleteRequest = new DeleteRequest.Builder().index("products-002").id(id).build();
+        DeleteResponse deleteResponse = elasticsearchClient.delete(deleteRequest);
+        return deleteResponse.result().equals(Result.Deleted);
+    }
 
 }
