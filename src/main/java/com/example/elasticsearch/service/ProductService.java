@@ -13,5 +13,6 @@ public interface ProductService {
     Product updateProduct(String id, Product product) throws IOException;
     boolean deleteProduct(String id) throws IOException;
     List<Product> getProductsByCategory(String category) throws IOException;
+    List<Product> getProductsByPriceRange(double min, double max) throws IOException;
 
 }

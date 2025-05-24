@@ -61,4 +61,10 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @GetMapping("/search/range")
+    public ResponseEntity<List<Product>> searchByPriceRange(@RequestParam("min") double min, @RequestParam("max") double max) throws IOException {
+        List<Product> products = productService.getProductsByPriceRange(min, max);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
 }

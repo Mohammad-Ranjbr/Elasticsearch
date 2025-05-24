@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.json.JsonData;
 import com.example.elasticsearch.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +97,26 @@ public class ProductServiceImpl implements ProductService {
                         q.match(t ->
                                 t.field("category")
                                         .query(category)))
+                .build();
+        SearchResponse<Product> searchResponse = elasticsearchClient.search(searchRequest, Product.class);
+        List<Hit<Product>> hits = searchResponse.hits().hits();
+        List<Product> products = new ArrayList<>();
+        for (Hit<Product> hit : hits) {
+            Product product = hit.source();
+            products.add(product);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getProductsByPriceRange(double min, double max) throws IOException {
+        SearchRequest searchRequest = new SearchRequest.Builder()
+                .index("products-002")
+                .query(q ->
+                        q.range(t ->
+                                t.field("price")
+                                        .gte(JsonData.of(min))
+                                        .lte(JsonData.of(max))))
                 .build();
         SearchResponse<Product> searchResponse = elasticsearchClient.search(searchRequest, Product.class);
         List<Hit<Product>> hits = searchResponse.hits().hits();
