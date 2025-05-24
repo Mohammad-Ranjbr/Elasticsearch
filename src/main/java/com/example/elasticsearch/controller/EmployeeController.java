@@ -83,4 +83,11 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
+    @GetMapping("/search/match-range")
+    public ResponseEntity<List<Employee>> searchEmployeeByNameAndSalaryRange(
+            @RequestParam("name") String name, @RequestParam("min") double min,@RequestParam("max") double max) {
+        List<Employee> employees = employeeService.searchEmployeeByNameAndSalaryRange(name, min, max);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
 }

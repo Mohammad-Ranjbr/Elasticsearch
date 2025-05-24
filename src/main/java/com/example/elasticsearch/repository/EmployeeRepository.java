@@ -14,5 +14,7 @@ public interface EmployeeRepository extends ElasticsearchRepository<Employee, Lo
     List<Employee> findBySalaryBetween(double min, double max); // Range query on the salary field
     @Query(value = "{\"bool\": {\"must\": [{\"match\": {\"name\": \"?0\"}}]}}") // DSL (Domain Specific Language) query using the @Query annotation
     List<Employee> findByNameMatchQuery(String name);
+    @Query(value = "{\"bool\": {\"must\": [{\"match\": {\"name\": \"?0\"}},{\"range\": {\"salary\": {\"gte\": ?1,\"lte\": ?2}}}]}}")
+    List<Employee> findByMatchNameAndSalaryRange(String name, double minSalary, double maxSalary);
 
 }

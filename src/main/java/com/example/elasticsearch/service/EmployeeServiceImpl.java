@@ -77,4 +77,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findByNameMatchQuery(name);
     }
 
+    @Override
+    public List<Employee> searchEmployeeByNameAndSalaryRange(String name, double minSalary, double maxSalary) {
+        return employeeRepository.findByMatchNameAndSalaryRange(name, minSalary, maxSalary);
+    }
+
 }
