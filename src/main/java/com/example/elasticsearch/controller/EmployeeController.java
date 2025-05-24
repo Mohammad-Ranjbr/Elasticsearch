@@ -73,7 +73,13 @@ public class EmployeeController {
 
     @GetMapping("/filter")
     public ResponseEntity<List<Employee>> filterEmployeesBySalaryRange(@RequestParam("min") double min,@RequestParam("max") double max) {
-        List<Employee> employees = employeeService.getEmployeeBySalaryBetween(min, max);
+        List<Employee> employees = employeeService.getEmployeeBySalaryRange(min, max);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/match")
+    public ResponseEntity<List<Employee>> searchByNameMatchQuery(@RequestParam("keyword") String name) {
+        List<Employee> employees = employeeService.getEmployeeByNameMatchQuery(name);
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 

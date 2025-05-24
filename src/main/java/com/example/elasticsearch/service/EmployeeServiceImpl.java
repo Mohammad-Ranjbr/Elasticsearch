@@ -68,8 +68,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployeeBySalaryBetween(double min, double max) {
+    public List<Employee> getEmployeeBySalaryRange(double min, double max) {
         return employeeRepository.findBySalaryBetween(min, max);
+    }
+
+    @Override
+    public List<Employee> getEmployeeByNameMatchQuery(String name) {
+        return employeeRepository.findByNameMatchQuery(name);
     }
 
 }
